@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FusionMargin AWMO | AI-Driven Food-to-Go Margin Operating System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+:root{
+  /* FusionMargin Brand – Dark Navy + Electric Blue */
+  --teal:#1E7EE4;
+  --teal-light:#4BA3F5;
+  --teal-dim:#1567C2;
+  --teal-dark:#0E4F9A;
+
+  /* Dark Backgrounds */
+  --bg-black:#020810;
+  --bg-deep:#030C1C;
+  --bg-dark:#050F22;
+  --bg-card:#081428;
+
+  /* Navy Accents */
+  --navy:#091830;
+  --navy-mid:#0C2148;
+  --navy-light:#163870;
+  --navy-bright:#1A52A8;
+  --blue-accent:#1A52A8;
+  --blue-soft:#5BA3E8;
+  --blue-glow:rgba(26,82,168,0.15);
+
+  /* Light Sections */
+  --light-bg:#EDF4FD;
+  --light-card:#FFFFFF;
+  --light-border:#BFDBF7;
+  --text-dark:#030A1A;
+  --text-mid:#182F55;
+  --text-muted:#3A5878;
+
+  /* Text on Dark */
+  --white:#FFFFFF;
+  --txt-secondary:#7AACD8;
+  --txt-dim:#2C4A68;
+
+  /* UI */
+  --card-bg:rgba(8,20,40,0.92);
+  --card-border:rgba(30,126,228,0.15);
+  --navy-card:rgba(9,24,48,0.8);
+  --navy-border:rgba(26,82,168,0.25);
+
+  --nav-h:72px;
+  --max-w:1200px;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --display:'Sora',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --ease:cubic-bezier(0.4,0,0.2,1);
+  --ease-out:cubic-bezier(0,0,0.2,1);
+}
+
+body{font-family:var(--font);color:var(--white);background:var(--bg-black);overflow-x:hidden;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg-black);}
+::-webkit-scrollbar-thumb{background:var(--teal);border-radius:2px;}
+
+img{display:block;max-width:100%;}
+
+/* ─── NAVBAR ─────────────────────────────────────────── */
+.navbar{
+  position:fixed;top:0;left:0;width:100%;height:var(--nav-h);
+  background:rgba(2,8,16,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(30,126,228,0.12);
+  z-index:1000;display:flex;align-items:center;
+  padding:0 clamp(16px,5vw,60px);
+  justify-content:space-between;
+  transition:border-color 0.3s;
+}
+.nav-logo{
+  font-family:var(--display);font-size:20px;font-weight:800;
+  color:var(--white);letter-spacing:-0.5px;
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;text-decoration:none;flex-shrink:0;
+}
+.nav-logo-icon{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:0 4px 16px rgba(30,126,228,0.35);
+}
+.nav-logo-icon svg{width:24px;height:24px;}
+.nav-logo-text{display:flex;flex-direction:column;line-height:1;}
+.nav-logo-name{font-size:18px;font-weight:800;color:var(--white);}
+.nav-logo-name span{color:var(--teal);}
+.nav-logo-sub{font-size:9px;font-family:var(--mono);font-weight:500;color:var(--txt-secondary);letter-spacing:2.5px;text-transform:uppercase;margin-top:4px;}
+
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links li button{
+  background:none;border:none;
+  color:var(--txt-secondary);
+  font-size:11px;font-weight:600;
+  padding:8px 16px;border-radius:7px;
+  transition:all 0.22s var(--ease);
+  cursor:pointer;font-family:var(--mono);
+  letter-spacing:0.8px;text-transform:uppercase;
+  position:relative;white-space:nowrap;
+}
+.nav-links li button:hover{color:var(--teal);background:rgba(30,126,228,0.06);}
+.nav-links li button.active{color:var(--teal);background:rgba(30,126,228,0.08);}
+.nav-links li button.active::after{
+  content:'';position:absolute;bottom:5px;left:50%;
+  transform:translateX(-50%);width:14px;height:2px;
+  background:var(--teal);border-radius:2px;
+}
+
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-demo-nav{
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--white);border:none;padding:9px 20px;border-radius:8px;
+  font-size:11px;font-weight:700;cursor:pointer;
+  transition:all 0.22s;font-family:var(--mono);
+  letter-spacing:0.8px;text-transform:uppercase;white-space:nowrap;
+  box-shadow:0 2px 10px rgba(30,126,228,0.25);
+}
+.btn-demo-nav:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(30,126,228,0.45);}
+
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;background:none;border:none;flex-shrink:0;}
+.hamburger span{width:22px;height:2px;background:var(--teal);border-radius:2px;transition:0.3s;display:block;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-nav{
+  display:none;position:fixed;top:var(--nav-h);left:0;width:100%;
+  background:rgba(2,8,16,0.99);backdrop-filter:blur(20px);
+  padding:12px 20px 20px;flex-direction:column;gap:2px;
+  z-index:999;border-bottom:1px solid rgba(30,126,228,0.1);
+  animation:slideDown 0.25s var(--ease-out);
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.mobile-nav.open{display:flex;}
+.mobile-nav button{
+  background:none;border:none;color:var(--txt-secondary);
+  font-size:13px;font-weight:600;padding:13px 12px;
+  border-bottom:1px solid rgba(30,126,228,0.06);
+  cursor:pointer;font-family:var(--mono);text-align:left;
+  text-transform:uppercase;letter-spacing:1px;
+  transition:color 0.2s,background 0.2s;border-radius:6px;
+}
+.mobile-nav button:hover{color:var(--teal);background:rgba(30,126,228,0.05);}
+.mobile-nav .mob-cta{
+  margin-top:8px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--white);border:none;padding:13px;
+  border-radius:8px;font-weight:700;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  font-family:var(--mono);
+}
+
+/* ─── PAGE SYSTEM ─────────────────────────────────────── */
+.page{display:none;min-height:100vh;padding-top:var(--nav-h);}
+.page.active{display:block;animation:pgIn 0.35s var(--ease);}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* ─── SECTION COMMONS ─────────────────────────────────── */
+.label-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--teal);margin-bottom:14px;
+}
+.label-tag::before{content:'';width:20px;height:1px;background:var(--teal);}
+
+.label-tag-blue{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--blue-soft);margin-bottom:14px;
+}
+.label-tag-blue::before{content:'';width:20px;height:1px;background:var(--blue-soft);}
+
+.section-h2{
+  font-family:var(--display);font-size:clamp(28px,3.5vw,52px);
+  font-weight:800;line-height:1.1;letter-spacing:-0.8px;
+  margin-bottom:10px;
+}
+.section-h2.teal{color:var(--teal);}
+.section-h2.dark{color:var(--text-dark);}
+.section-h2.white{color:var(--white);}
+
+.section-divider{width:56px;height:3px;margin:16px 0 28px;border-radius:2px;}
+.divider-teal{background:linear-gradient(90deg,var(--teal),transparent);}
+.divider-blue{background:linear-gradient(90deg,var(--blue-accent),transparent);}
+.divider-center{margin:16px auto 28px;}
+
+.para-dark{color:var(--txt-secondary);line-height:1.85;font-size:17px;}
+.para-light{color:var(--text-mid);line-height:1.85;font-size:17px;}
+
+.container{max-width:var(--max-w);margin:0 auto;padding:0 clamp(16px,4vw,60px);}
+
+/* ─── BUTTONS ─────────────────────────────────────────── */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--white);padding:13px 28px;border-radius:8px;
+  text-decoration:none;font-weight:700;font-size:12px;
+  letter-spacing:0.8px;text-transform:uppercase;
+  transition:all 0.25s;font-family:var(--mono);border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(30,126,228,0.28);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(30,126,228,0.45);}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1.5px solid rgba(30,126,228,0.4);color:var(--teal);
+  padding:12px 28px;border-radius:8px;text-decoration:none;
+  font-weight:700;font-size:12px;letter-spacing:0.8px;
+  text-transform:uppercase;transition:all 0.25s;
+  font-family:var(--mono);background:none;cursor:pointer;
+}
+.btn-secondary:hover{background:rgba(30,126,228,0.07);border-color:var(--teal);}
+
+.btn-blue{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue-accent);color:var(--white);
+  padding:12px 28px;border-radius:8px;
+  font-weight:700;font-size:12px;letter-spacing:0.8px;
+  text-transform:uppercase;transition:all 0.25s;
+  font-family:var(--mono);border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(26,82,168,0.3);
+}
+.btn-blue:hover{transform:translateY(-2px);background:#143F8A;box-shadow:0 8px 28px rgba(26,82,168,0.45);}
+
+/* ─── BADGES ─────────────────────────────────────────── */
+.risk-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;
+  font-size:10px;font-weight:700;font-family:var(--mono);letter-spacing:0.5px;
+}
+.risk-teal{background:rgba(30,126,228,0.12);color:var(--teal);border:1px solid rgba(30,126,228,0.3);}
+.risk-amber{background:rgba(255,186,0,0.12);color:#F5A623;border:1px solid rgba(255,186,0,0.25);}
+.risk-red{background:rgba(239,68,68,0.12);color:#EF4444;border:1px solid rgba(239,68,68,0.25);}
+.risk-blue{background:rgba(91,163,232,0.12);color:var(--blue-soft);border:1px solid rgba(91,163,232,0.25);}
+.risk-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
+
+/* ─── HERO ──────────────────────────────────────────────── */
+.hero{
+  position:relative;
+  padding:clamp(80px,12vw,120px) 0 clamp(60px,8vw,90px);
+  background:var(--bg-black);overflow:hidden;
+  min-height:calc(100vh - var(--nav-h));
+  display:flex;align-items:center;
+}
+.hero-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;
+}
+.hero-grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(30,126,228,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(30,126,228,0.04) 1px,transparent 1px);
+  background-size:50px 50px;
+  pointer-events:none;z-index:0;
+}
+.hero-glow-1{
+  position:absolute;top:-200px;right:-100px;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(30,126,228,0.08) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.hero-glow-2{
+  position:absolute;bottom:-150px;left:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(26,82,168,0.09) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+}
+.hero-inner{
+  max-width:var(--max-w);margin:0 auto;
+  padding:0 clamp(16px,4vw,60px);
+  display:grid;grid-template-columns:1.15fr 0.85fr;
+  gap:clamp(30px,5vw,80px);align-items:center;
+  position:relative;z-index:1;width:100%;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(30,126,228,0.07);
+  border:1px solid rgba(30,126,228,0.28);
+  color:var(--teal);font-size:10px;font-weight:700;
+  letter-spacing:2.5px;padding:6px 14px 6px 10px;
+  border-radius:4px;text-transform:uppercase;
+  margin-bottom:20px;font-family:var(--mono);
+}
+.hero-badge-dot{
+  width:7px;height:7px;border-radius:50%;background:var(--teal);
+  animation:pulse-dot 1.6s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.35;transform:scale(0.55);}}
+
+.hero h1{
+  font-family:var(--display);
+  font-size:clamp(38px,4.5vw,68px);
+  line-height:1.06;font-weight:800;
+  letter-spacing:-1.5px;color:var(--white);
+  margin-bottom:10px;
+}
+.hero h1 .teal{color:var(--teal);}
+.hero h1 .blue{color:var(--blue-soft);}
+
+.hero-rule{
+  width:64px;height:3px;
+  background:linear-gradient(90deg,var(--teal),rgba(26,82,168,0.6));
+  margin:20px 0 24px;border-radius:2px;
+}
+.hero-body{
+  color:var(--txt-secondary);font-size:clamp(14px,1.5vw,19px);
+  line-height:1.8;margin-bottom:36px;max-width:540px;
+}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+
+/* Score Card */
+.score-card{
+  background:linear-gradient(145deg,rgba(8,20,40,0.95),rgba(3,12,28,0.98));
+  border:1px solid rgba(30,126,228,0.2);border-radius:18px;
+  padding:32px;position:relative;overflow:hidden;
+  box-shadow:0 24px 70px rgba(0,0,0,0.55),0 0 0 1px rgba(30,126,228,0.05);
+}
+.score-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--teal),var(--blue-accent),transparent);
+}
+.score-card-label{
+  font-family:var(--mono);color:var(--teal);
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.score-card-label::after{content:'';flex:1;height:1px;background:rgba(30,126,228,0.15);}
+.score-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.score-row:last-child{border-bottom:none;padding-bottom:0;}
+.score-icon{
+  width:30px;height:30px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:14px;
+}
+.score-icon.teal-bg{background:rgba(30,126,228,0.1);border:1px solid rgba(30,126,228,0.2);}
+.score-icon.blue-bg{background:rgba(26,82,168,0.1);border:1px solid rgba(26,82,168,0.2);}
+.score-icon.amber-bg{background:rgba(245,166,35,0.1);border:1px solid rgba(245,166,35,0.2);}
+.score-lbl{color:var(--txt-secondary);font-size:13px;flex:1;font-weight:500;}
+.score-val{
+  font-family:var(--display);color:var(--white);
+  font-size:17px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.score-big{
+  margin-top:20px;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;gap:20px;
+}
+.score-big-num{
+  font-family:var(--display);font-size:48px;
+  font-weight:800;color:var(--teal);line-height:1;
+  text-shadow:0 0 30px rgba(30,126,228,0.4);
+}
+.score-big-info .label{color:var(--white);font-weight:700;font-size:15px;margin-bottom:6px;}
+.score-big-info .sub{color:var(--txt-secondary);font-size:12px;}
+
+/* ─── STATS STRIP ─────────────────────────────────────── */
+.stats-strip{
+  background:linear-gradient(90deg,rgba(3,12,28,1) 0%,rgba(6,18,36,1) 100%);
+  border-top:1px solid rgba(30,126,228,0.08);
+  border-bottom:1px solid rgba(30,126,228,0.08);
+  padding:clamp(36px,5vw,56px) 0;
+}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(16px,3vw,40px);text-align:center;
+}
+.stat-blk{position:relative;padding:0 16px;}
+.stat-blk+.stat-blk::before{
+  content:'';position:absolute;left:0;top:10%;height:80%;
+  width:1px;background:rgba(30,126,228,0.1);
+}
+.stat-num{
+  font-family:var(--display);font-size:clamp(32px,4vw,44px);
+  font-weight:800;color:var(--teal);display:block;
+  line-height:1;margin-bottom:8px;
+}
+.stat-txt{color:var(--white);font-size:13px;font-weight:500;line-height:1.5;margin-bottom:6px;}
+.stat-source{font-family:var(--mono);font-size:9px;color:var(--txt-dim);letter-spacing:0.8px;}
+
+/* ─── SECTION LIGHT (Process / How It Works) ─────────── */
+.section-light{
+  background:var(--light-bg);
+  padding:clamp(80px,10vw,120px) 0;
+}
+.process-intro{text-align:center;max-width:780px;margin:0 auto 56px;}
+.process-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(16px,2.5vw,28px);
+}
+.process-card{
+  background:var(--light-card);border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.07);
+  transition:transform 0.3s,box-shadow 0.3s;
+  border:1px solid var(--light-border);
+}
+.process-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(30,126,228,0.12);}
+.process-card-img{
+  width:100%;height:160px;overflow:hidden;
+  position:relative;background:#BDD5F4;
+}
+.process-card-img img{width:100%;height:100%;object-fit:cover;}
+.process-card-img-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+  background:linear-gradient(135deg,rgba(30,126,228,0.12),rgba(26,82,168,0.15));
+}
+.process-card-body{padding:22px 20px;}
+.step-tag{
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  color:var(--teal);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.process-card-body h3{
+  font-family:var(--display);color:var(--text-dark);
+  font-size:17px;font-weight:700;margin-bottom:10px;
+}
+.process-card-body p{color:var(--text-muted);font-size:13.5px;line-height:1.7;}
+
+/* ─── SECTION DARK ────────────────────────────────────── */
+.section-dark{
+  background:var(--bg-dark);
+  padding:clamp(80px,10vw,120px) 0;
+}
+.platform-sub{max-width:760px;margin-bottom:44px;}
+
+/* ─── PLATFORM CARDS ─────────────────────────────────── */
+.platform-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(16px,2.5vw,28px);
+}
+.platform-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;overflow:hidden;position:relative;
+  transition:all 0.3s;
+}
+.platform-card:hover{border-color:rgba(30,126,228,0.35);box-shadow:0 12px 36px rgba(30,126,228,0.1);}
+.platform-card-img{
+  width:100%;height:160px;overflow:hidden;position:relative;
+  background:linear-gradient(135deg,var(--bg-card),var(--navy));
+}
+.platform-card-img img{width:100%;height:100%;object-fit:cover;}
+.platform-card-img-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+}
+.platform-card .inner{padding:24px;}
+.element-badge{
+  display:inline-block;
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  color:var(--teal);letter-spacing:2px;text-transform:uppercase;
+  border:1px solid rgba(30,126,228,0.25);
+  padding:3px 10px;border-radius:4px;margin-bottom:12px;
+  background:rgba(30,126,228,0.05);
+}
+.platform-card .inner h3{
+  font-family:var(--display);color:var(--white);
+  font-size:18px;font-weight:700;margin-bottom:10px;line-height:1.3;
+}
+.platform-card .inner p{color:var(--txt-secondary);font-size:13.5px;line-height:1.72;}
+.more-text{
+  color:var(--txt-secondary);font-size:13px;line-height:1.7;
+  margin-top:14px;display:none;
+}
+.platform-card.open .more-text{display:block;}
+.expand-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  margin-top:16px;background:none;border:1px solid rgba(30,126,228,0.2);
+  color:var(--teal);font-family:var(--mono);font-size:10px;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  padding:7px 14px;border-radius:6px;cursor:pointer;
+  transition:all 0.22s;
+}
+.expand-btn:hover{background:rgba(30,126,228,0.07);}
+
+/* ─── ABOUT ───────────────────────────────────────────── */
+.about-hero{
+  background:var(--bg-black);
+  padding:clamp(80px,12vw,120px) 0 clamp(60px,8vw,100px);
+}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:start;}
+.about-para{color:var(--txt-secondary);font-size:15.5px;line-height:1.82;margin-bottom:18px;}
+.about-tags{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;margin-top:28px;margin-bottom:32px;
+}
+.feature-tag{
+  background:rgba(30,126,228,0.06);border:1px solid rgba(30,126,228,0.18);
+  border-radius:8px;padding:10px 14px;font-family:var(--mono);
+  font-size:10px;font-weight:600;color:var(--teal);
+  letter-spacing:0.8px;text-transform:uppercase;
+}
+.founder-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:28px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.founder-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--teal),var(--blue-accent),transparent);
+}
+.founder-tag{
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  color:var(--teal);letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:10px;
+}
+.founder-card h4{font-family:var(--display);color:var(--white);font-size:22px;font-weight:800;margin-bottom:4px;}
+.founder-title{color:var(--txt-secondary);font-size:12px;font-family:var(--mono);margin-bottom:16px;}
+.founder-card p{color:var(--txt-secondary);font-size:14px;line-height:1.75;margin-bottom:14px;}
+
+/* ─── KPI ROW ─────────────────────────────────────────── */
+.kpi-row{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(14px,2vw,24px);margin-bottom:44px;
+}
+.kpi-card{
+  background:linear-gradient(145deg,rgba(30,126,228,0.05),rgba(26,82,168,0.06));
+  border:1px solid rgba(30,126,228,0.15);border-radius:12px;
+  padding:22px 18px;text-align:center;
+}
+.kpi-num{
+  font-family:var(--display);font-size:clamp(26px,3vw,36px);
+  font-weight:800;color:var(--teal);margin-bottom:6px;
+}
+.kpi-lbl{color:var(--txt-secondary);font-size:12px;line-height:1.5;font-family:var(--mono);}
+
+/* ─── MARKET CHARTS ───────────────────────────────────── */
+.market-kpi{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(16px,2.5vw,28px);margin-bottom:44px;
+}
+.mkt-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:28px 24px;
+}
+.mkt-num{
+  font-family:var(--display);font-size:clamp(32px,4vw,44px);
+  font-weight:800;color:var(--teal);line-height:1;margin-bottom:10px;
+}
+.mkt-lbl{color:var(--txt-secondary);font-size:14px;line-height:1.7;margin-bottom:10px;}
+.mkt-source{font-family:var(--mono);font-size:10px;color:var(--txt-dim);letter-spacing:0.5px;}
+.charts-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(16px,2.5vw,28px);margin-bottom:28px;
+}
+.chart-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:24px;
+}
+.chart-card-full{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:14px;padding:24px;margin-bottom:28px;
+}
+.chart-title{
+  font-family:var(--display);color:var(--white);
+  font-size:16px;font-weight:700;margin-bottom:4px;
+}
+.chart-sub{color:var(--txt-secondary);font-size:12px;font-family:var(--mono);margin-bottom:18px;}
+.chart-wrap{height:240px;position:relative;}
+.chart-wrap-lg{height:360px;position:relative;}
+
+/* ─── PRICING ─────────────────────────────────────────── */
+.pricing-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(16px,2.5vw,28px);margin-bottom:64px;
+  align-items:start;
+}
+.price-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:16px;padding:32px 28px;position:relative;
+}
+.price-card.featured{
+  border-color:rgba(30,126,228,0.4);
+  box-shadow:0 0 0 1px rgba(30,126,228,0.15),0 20px 60px rgba(30,126,228,0.12);
+}
+.price-card.featured::before{
+  content:'MOST POPULAR';position:absolute;top:-1px;left:50%;
+  transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--teal),var(--teal-dark));
+  color:var(--white);font-family:var(--mono);font-size:9px;font-weight:700;
+  letter-spacing:2px;padding:5px 16px;border-radius:0 0 8px 8px;
+}
+.price-tier{
+  font-family:var(--mono);font-size:9px;font-weight:700;
+  color:var(--teal);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;
+}
+.price-card h3{
+  font-family:var(--display);color:var(--white);
+  font-size:22px;font-weight:800;margin-bottom:8px;
+}
+.price-card .desc{color:var(--txt-secondary);font-size:13px;line-height:1.65;margin-bottom:20px;}
+.price-amount{
+  font-family:var(--display);color:var(--white);
+  font-size:48px;font-weight:800;line-height:1;
+}
+.price-amount span{font-size:22px;}
+.price-period{
+  font-family:var(--mono);color:var(--txt-dim);
+  font-size:10px;letter-spacing:1px;margin-top:4px;margin-bottom:20px;
+}
+.price-divider{height:1px;background:rgba(30,126,228,0.1);margin-bottom:20px;}
+.price-features{list-style:none;margin-bottom:28px;}
+.price-features li{
+  display:flex;align-items:flex-start;gap:10px;
+  color:var(--txt-secondary);font-size:13.5px;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.price-features li:last-child{border-bottom:none;}
+.chk{color:var(--teal);font-size:14px;flex-shrink:0;margin-top:1px;}
+.price-btn{
+  width:100%;padding:13px;border-radius:8px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  transition:all 0.25s;border:none;
+}
+.price-btn-teal{
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--white);
+  box-shadow:0 4px 16px rgba(30,126,228,0.3);
+}
+.price-btn-teal:hover{box-shadow:0 8px 28px rgba(30,126,228,0.45);transform:translateY(-1px);}
+.price-btn-outline{
+  background:none;color:var(--teal);
+  border:1.5px solid rgba(30,126,228,0.35);
+}
+.price-btn-outline:hover{background:rgba(30,126,228,0.07);}
+
+/* ─── FAQ ────────────────────────────────────────────── */
+.faq-wrap{max-width:780px;margin-bottom:24px;}
+.faq-item{border-bottom:1px solid rgba(30,126,228,0.08);}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 0;cursor:pointer;gap:16px;
+}
+.faq-q h4{
+  font-family:var(--display);color:var(--white);
+  font-size:15px;font-weight:700;line-height:1.4;
+}
+.faq-icon{
+  flex-shrink:0;width:28px;height:28px;border-radius:50%;
+  background:rgba(30,126,228,0.08);border:1px solid rgba(30,126,228,0.2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--teal);font-size:16px;font-weight:400;
+  transition:transform 0.3s;
+}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-body{
+  color:var(--txt-secondary);font-size:14.5px;line-height:1.75;
+  max-height:0;overflow:hidden;
+  transition:max-height 0.35s var(--ease),padding 0.35s;
+}
+.faq-item.open .faq-body{max-height:300px;padding-top:14px;}
+
+/* ─── CONTACT ─────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,80px);align-items:start;}
+.contact-left-para{color:var(--txt-secondary);font-size:15px;line-height:1.75;margin-bottom:16px;}
+.contact-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
+.contact-icon{
+  width:40px;height:40px;background:rgba(30,126,228,0.08);
+  border:1px solid rgba(30,126,228,0.2);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.contact-item-text strong{display:block;color:var(--white);font-size:13px;margin-bottom:2px;}
+.contact-item-text span{color:var(--txt-secondary);font-size:13px;}
+.contact-form-card{
+  background:var(--card-bg);border:1px solid rgba(30,126,228,0.15);
+  border-radius:16px;padding:36px;position:relative;overflow:hidden;
+}
+.contact-form-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--teal),var(--blue-accent),transparent);
+}
+.contact-form-card h3{font-family:var(--display);color:var(--white);font-size:22px;font-weight:800;margin-bottom:24px;}
+.form-group{margin-bottom:18px;}
+.form-label{display:block;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--txt-dim);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.form-ctrl{
+  width:100%;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(30,126,228,0.2);border-radius:8px;
+  padding:12px 16px;color:var(--white);font-size:14px;
+  font-family:var(--font);transition:all 0.25s;outline:none;
+}
+.form-ctrl::placeholder{color:var(--txt-dim);}
+.form-ctrl:focus{border-color:rgba(30,126,228,0.5);background:rgba(30,126,228,0.03);}
+.form-ctrl option{background:var(--bg-card);}
+.ta{resize:vertical;min-height:90px;}
+.form-submit{
+  width:100%;background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--white);border:none;padding:14px;border-radius:8px;
+  font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;transition:all 0.25s;
+}
+.form-submit:hover{box-shadow:0 6px 20px rgba(30,126,228,0.38);transform:translateY(-1px);}
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+footer{background:var(--bg-black);border-top:1px solid rgba(30,126,228,0.1);padding:clamp(40px,6vw,80px) 0 28px;}
+.footer-inner{max-width:var(--max-w);margin:0 auto;padding:0 clamp(16px,4vw,60px);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:clamp(30px,5vw,80px);margin-bottom:40px;}
+.footer-logo{font-family:var(--display);color:var(--teal);font-size:20px;font-weight:800;display:block;margin-bottom:14px;}
+.footer-brand p{color:var(--txt-dim);font-size:13px;line-height:1.75;}
+.footer-col h5{font-family:var(--mono);color:var(--white);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;}
+.footer-col a{display:block;color:var(--txt-dim);font-size:13px;margin-bottom:10px;cursor:pointer;transition:color 0.2s;}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{border-top:1px solid rgba(30,126,228,0.08);padding-top:20px;display:flex;flex-direction:column;gap:4px;}
+.footer-bottom p{color:var(--txt-dim);font-size:12px;font-family:var(--mono);}
+.footer-bottom span{color:var(--teal);}
+
+/* ─── RESPONSIVE ──────────────────────────────────────── */
+@media(min-width:1400px){
+  :root{--max-w:1300px;}
+  .hero h1{font-size:72px;}
+  .hero-body{font-size:20px;max-width:580px;}
+  .section-h2{font-size:54px;}
+  .para-dark,.para-light{font-size:18px;}
+  .stat-num{font-size:46px;}
+  .process-card-img{height:180px;}
+  .platform-card-img{height:200px;}
+  .chart-wrap{height:300px;}
+  .chart-wrap-lg{height:420px;}
+  .score-big-num{font-size:52px;}
+}
+@media(max-width:900px){
+  .platform-grid{grid-template-columns:repeat(2,1fr);}
+  .pricing-grid{grid-template-columns:1fr 1fr;}
+  .kpi-row{grid-template-columns:repeat(2,1fr);}
+  .market-kpi{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .nav-links,.nav-right .btn-demo-nav{display:none;}
+  .hamburger{display:flex;}
+  .nav-right{gap:0;}
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-inner>div:last-child{display:none;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .process-grid{grid-template-columns:repeat(2,1fr);}
+  .platform-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:28px;}
+  .kpi-card{padding:16px 12px;}
+  .charts-grid{grid-template-columns:1fr;gap:16px;margin-bottom:16px;}
+  .chart-card{padding:16px;}
+  .chart-card-full{padding:16px;margin-bottom:16px;}
+  .chart-wrap{height:200px;}
+  .chart-wrap-lg{height:260px;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .market-kpi{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .process-grid{grid-template-columns:1fr;}
+  .kpi-row{grid-template-columns:1fr;}
+  .about-tags{grid-template-columns:1fr;}
+  .chart-wrap{height:180px;}
+  .chart-wrap-lg{height:220px;}
+  .chart-title{font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAVBAR ═══════════ -->
+<nav class="navbar">
+  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+    
+    <!-- Removed Logo Icon -->
+
+    <div class="nav-logo-text">
+      <span class="nav-logo-name">Fusion<span>Margin</span></span>
+      <span class="nav-logo-sub">AWMO · AI Decision Engine</span>
+    </div>
+  </a>
+
+  <ul class="nav-links">
+    <li><button id="nav-home" class="active" onclick="showPage('home')">Home</button></li>
+    <li><button id="nav-about" onclick="showPage('about')">About</button></li>
+    <li><button id="nav-platform" onclick="showPage('platform')">Platform</button></li>
+    <li><button id="nav-market" onclick="showPage('market')">Market</button></li>
+    <li><button id="nav-pricing" onclick="showPage('pricing')">Pricing</button></li>
+    <li><button id="nav-contact" onclick="showPage('contact')">Contact</button></li>
+  </ul>
+
+  <div class="nav-right">
+    <button class="btn-demo-nav" onclick="showPage('contact')">Book a Demo</button>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button onclick="showPage('home');closeMobile()">Home</button>
+  <button onclick="showPage('about');closeMobile()">About</button>
+  <button onclick="showPage('platform');closeMobile()">Platform</button>
+  <button onclick="showPage('market');closeMobile()">Market</button>
+  <button onclick="showPage('pricing');closeMobile()">Pricing</button>
+  <button onclick="showPage('contact');closeMobile()">Contact</button>
+  <button class="mob-cta" onclick="showPage('contact');closeMobile()">Book a Demo →</button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: HOME
+═══════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-noise"></div>
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          AI-Native Food-to-Go Margin Operating System
+        </div>
+        <h1>Predict. <span class="teal">Optimise.</span><br><span class="blue">Protect.</span></h1>
+        <div class="hero-rule"></div>
+        <p class="hero-body">FusionMargin AWMO converts perishable food-to-go data into real-time margin decisions  recommending exactly what to prep, when to markdown, and which staff action to execute  so cafés, convenience stores, and coffee chains stop losing money to spoilage, stockouts, and poor markdown timing.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('contact')">Book a Demo →</button>
+          <button class="btn-secondary" onclick="showPage('platform')">Explore Platform</button>
+        </div>
+      </div>
+      <div>
+        <div class="score-card">
+          <div class="score-card-label">Live Margin Intelligence Monitor</div>
+          <div class="score-row">
+            <div class="score-icon teal-bg">📊</div>
+            <span class="score-lbl">Spoilage Risk Identified Today</span>
+            <span class="score-val">£1,240</span>
+          </div>
+          <div class="score-row">
+            <div class="score-icon blue-bg">🥪</div>
+            <span class="score-lbl">SKU Freshness States Tracked</span>
+            <span class="score-val">3,400/hr</span>
+          </div>
+          <div class="score-row">
+            <div class="score-icon amber-bg">⚡</div>
+            <span class="score-lbl">Markdown Alerts Pending</span>
+            <span class="score-val">8 <span class="risk-badge risk-amber"><span class="risk-dot"></span>Urgent</span></span>
+          </div>
+          <div class="score-row">
+            <div class="score-icon teal-bg">🔒</div>
+            <span class="score-lbl">Compliance Engine Status</span>
+            <span class="score-val"><span class="risk-badge risk-teal"><span class="risk-dot"></span>Active</span></span>
+          </div>
+          <div class="score-row">
+            <div class="score-icon blue-bg">🍞</div>
+            <span class="score-lbl">Next Prep Window Optimised</span>
+            <span class="score-val">10:15 AM</span>
+          </div>
+          <div class="score-big">
+            <div class="score-big-num">87%</div>
+            <div class="score-big-info">
+              <div class="label">Waste Reduction Accuracy</div>
+              <div class="sub">Closed-loop learning · All pilot sites</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <div class="stats-strip">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-blk">
+          <span class="stat-num">£3.2B</span>
+          <div class="stat-txt">Annual UK Food Waste Cost</div>
+          <div class="stat-source">WRAP · Hospitality &amp; Food Service</div>
+        </div>
+        <div class="stat-blk">
+          <span class="stat-num">£10K</span>
+          <div class="stat-txt">Avg Annual Waste Per Outlet</div>
+          <div class="stat-source">WRAP Sector Analysis 2024</div>
+        </div>
+        <div class="stat-blk">
+          <span class="stat-num">25%</span>
+          <div class="stat-txt">Typical Food Waste Rate</div>
+          <div class="stat-source">Food Service Research</div>
+        </div>
+        <div class="stat-blk">
+          <span class="stat-num">87%</span>
+          <div class="stat-txt">Pilot Waste Reduction Rate</div>
+          <div class="stat-source">FusionMargin AWMO Pilots</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS (Process Section  EXACT same model) -->
+  <section class="section-light">
+    <div class="container">
+      <div class="process-intro">
+        <div class="label-tag-blue">How It Works</div>
+        <h2 class="section-h2 dark">From Perishable Food Data to Margin-Protecting Action in Real Time</h2>
+        <div class="section-divider divider-blue"></div>
+        <p class="para-light">Every FusionMargin AWMO deployment follows a proven four-stage decision journey  from data ingestion and freshness modelling, to spoilage prediction and constrained optimisation, to precise "Next Best Action" delivery to your team  all without requiring data science expertise from your operations or management team.</p>
+      </div>
+      <div class="process-grid">
+
+        <!-- STEP 01 -->
+        <div class="process-card">
+          <div class="process-card-img">
+            <img src="f1.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:0;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.process-card-img-placeholder').style.display='flex'">
+            <div class="process-card-img-placeholder" style="display:none;">🍽️</div>
+          </div>
+          <div class="process-card-body">
+            <div class="step-tag">STEP 01</div>
+            <h3>Ingest &amp; Track</h3>
+            <p>Pull real-time POS sales, waste logs, batch records, and shelf-life rules. Structured data ingestion ensures no perishable signal is missed before intelligence processing begins.</p>
+          </div>
+        </div>
+
+        <!-- STEP 02 -->
+        <div class="process-card">
+          <div class="process-card-img">
+            <img src="f2.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:0;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.process-card-img-placeholder').style.display='flex'">
+            <div class="process-card-img-placeholder" style="display:none;">📈</div>
+          </div>
+          <div class="process-card-body">
+            <div class="step-tag">STEP 02</div>
+            <h3>Predict &amp; Model</h3>
+            <p>The Freshness-State Decision Model tracks each SKU by age bucket and spoilage risk  estimating exactly when each batch moves from "safe to hold" to "urgent to move."</p>
+          </div>
+        </div>
+
+        <!-- STEP 03 -->
+        <div class="process-card">
+          <div class="process-card-img">
+            <img src="f3.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:0;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.process-card-img-placeholder').style.display='flex'">
+            <div class="process-card-img-placeholder" style="display:none;">⚙️</div>
+          </div>
+          <div class="process-card-body">
+            <div class="step-tag">STEP 03</div>
+            <h3>Optimise &amp; Score</h3>
+            <p>The Constraint-Aware Optimisation Engine runs hundreds of prep, markdown, and pull scenarios  honouring batch sizes, labour windows, and shelf capacity before recommending any action.</p>
+          </div>
+        </div>
+
+        <!-- STEP 04 -->
+        <div class="process-card">
+          <div class="process-card-img">
+            <img src="f4.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:0;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.process-card-img-placeholder').style.display='flex'">
+            <div class="process-card-img-placeholder" style="display:none;">✅</div>
+          </div>
+          <div class="process-card-body">
+            <div class="step-tag">STEP 04</div>
+            <h3>Act &amp; Learn</h3>
+            <p>Deliver next-best-action directives to your team in real time while the Closed-Loop Learning Engine continuously improves recommendations from every execution outcome.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE CAPABILITIES -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="label-tag">Core Capabilities</div>
+      <h2 class="section-h2 white">Five Intelligence Engines. One Margin Operating System.</h2>
+      <div class="section-divider divider-teal"></div>
+      <p class="para-dark platform-sub">FusionMargin AWMO combines five proprietary AI engines into a single food-to-go decision layer  the only platform that unifies Demand Forecasting, Freshness-State Spoilage Prediction, Constraint-Aware Optimisation, Execution Tracking, and Closed-Loop Learning into one prescriptive margin intelligence system for cafés, convenience stores, and coffee chains.</p>
+
+      <div class="platform-grid">
+
+        <!-- ENGINE 01 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f7.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">🧠</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Engine 01</div>
+            <h3>Demand Forecasting Engine</h3>
+            <p>SKU, site, and daypart-level demand prediction integrating weather proxies, weekday patterns, local events, and store-specific trading behaviour.</p>
+            <div class="more-text">The forecasting layer estimates demand curves by product, batch, and time window  feeding directly into prep quantity recommendations and markdown timing logic to ensure the right quantity is available at the right moment.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Learn More ↓</button>
+          </div>
+        </div>
+
+        <!-- ENGINE 02 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f5.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">🥖</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Engine 02</div>
+            <h3>Freshness-State Spoilage Model</h3>
+            <p>Multi-age batch tracking that distinguishes safe-to-hold from urgent-to-move stock, applying different markdown logic by freshness stage.</p>
+            <div class="more-text">A major step beyond simple inventory systems  this model tracks each prepared food unit by age bucket, enabling precise spoilage risk scoring, improved auditability for write-offs, and freshness-optimised markdown timing down to the individual batch.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Learn More ↓</button>
+          </div>
+        </div>
+
+        <!-- ENGINE 03 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f6.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">⚡</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Engine 03</div>
+            <h3>Constraint-Aware Optimisation</h3>
+            <p>Margin-maximising decisions that honour real store constraints  batch sizes, prep windows, labour availability, and shelf capacity.</p>
+            <div class="more-text">The optimisation layer solves prep, markdown, and pull decisions as linked commercial problems  not isolated tasks. If morning over-prep changes afternoon markdown strategy, the system recalibrates immediately across all interdependent decisions.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Learn More ↓</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div><!-- end page home -->
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: ABOUT
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <div class="label-tag">Our Mission</div>
+          <h2 class="section-h2 teal">Built from the Real Cost of Food Waste in Food-to-Go Retail</h2>
+          <div class="section-divider divider-teal"></div>
+          <p class="about-para">FusionMargin AWMO was born from a clear, observed failure: cafés, convenience stores, and coffee chains manage food-to-go operations using manual routines, static reports, and manager judgment  with no integrated system to convert real-time perishable data into precise, margin-protecting daily decisions.</p>
+          <p class="about-para">Our platform transforms food-to-go management from a reactive, guesswork-driven process into a proactive, AI-powered Margin Operating System. We don't just report what was wasted  we model the relationship between every batch, its freshness state, and its markdown window, running optimised scenarios to deliver the single best commercial action before the margin window closes.</p>
+          <p class="about-para">Founded by an experienced retail operations leader and a Data Science engineer  FusionMargin AWMO combines deep operational domain knowledge with cutting-edge AI, built specifically for the thousands of food-to-go operators losing an average of £10,000 per year to avoidable waste.</p>
+          <div class="about-tags">
+            <div class="feature-tag">Freshness-State Decision Model</div>
+            <div class="feature-tag">Demand Forecasting · Daypart AI</div>
+            <div class="feature-tag">Constraint-Aware Optimisation</div>
+            <div class="feature-tag">Dynamic Markdown Timing Engine</div>
+            <div class="feature-tag">Closed-Loop Learning System</div>
+            <div class="feature-tag">Execution &amp; Compliance Tracking</div>
+            <div class="feature-tag">GDPR · Food Safety Compliant</div>
+            <div class="feature-tag">Patent-Pending IP Portfolio</div>
+          </div>
+        </div>
+        <div>
+          <div class="founder-card">
+            <div class="founder-tag">Co-Founder &amp; CEO</div>
+            <h4>Harshil Patel</h4>
+            <div class="founder-title">Supply Chain &amp; Operations Leader · Commercial Strategist · Platform Visionary</div>
+            <p>Over 4 years of operations and supply chain leadership across catering, pharmaceutical, and chemical industries. Currently supervising operations at Black Sheep Coffee London, with deep expertise in inventory control, KPI monitoring, team leadership, and P&amp;L-linked operational efficiency.</p>
+            <p>Harshil directs the "Operational Common Sense" of the FusionMargin AWMO algorithms  ensuring the platform respects real store constraints like prep windows, batch minimums, and labour capacity that generic AI tools ignore. His background in managing high-volume operations and reducing inventory discrepancies by 25% forms the commercial backbone of the platform's Margin Optimisation logic.</p>
+            <button class="btn-primary" onclick="showPage('contact')">Contact Founder →</button>
+          </div>
+
+          <div class="founder-card">
+  <div class="founder-tag">AI-Native Retail Decision Platform</div>
+
+  <h4>FusionMargin AWMO</h4>
+
+  <div class="founder-title">
+    Margin Optimisation · Waste Reduction · Operational Intelligence
+  </div>
+
+  <p>
+    FusionMargin AWMO is an AI-native retail optimisation platform purpose-built for food-to-go, convenience, and hybrid retail environments. The platform combines spoilage prediction, demand forecasting, markdown intelligence, and execution tracking into a single operational decision layer helping retailers reduce waste, improve gross margins, and standardise store-level execution.
+  </p>
+
+  <p>
+    Built around a real-time decision engine architecture, FusionMargin AWMO transforms fragmented retail data into actionable operational workflows. The platform continuously analyses inventory freshness, labour constraints, demand variability, and sell-through performance to generate commercially optimised recommendations at store level with sub-second execution capability and closed-loop learning infrastructure.
+  </p>
+
+  <button class="btn-primary" onclick="showPage('market')">
+    View Market Opportunity →
+  </button>
+</div>
+      </div>
+    </div>
+  </section>
+</div><!-- end page about -->
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: PLATFORM
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-platform">
+  <section class="section-dark" style="padding-top:clamp(80px,12vw,120px);">
+    <div class="container">
+      <div class="label-tag">The Platform</div>
+      <h2 class="section-h2 white">Every Layer of FusionMargin AWMO's Decision Intelligence</h2>
+      <div class="section-divider divider-teal"></div>
+      <p class="para-dark platform-sub">FusionMargin AWMO is a cloud-native B2B SaaS platform built on a modular architecture  React-based store manager interfaces, a hybrid AI decision engine, real-time execution tracking, and UK-compliant data infrastructure  designed to serve cafés, convenience stores, and coffee chains without requiring any data science expertise on-site.</p>
+
+      <div class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-num">Real-time</div>
+          <div class="kpi-lbl">Decision-to-execution delivery</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">87%</div>
+          <div class="kpi-lbl">Waste reduction · Pilot sites</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">£10K</div>
+          <div class="kpi-lbl">Avg annual savings per outlet</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-num">TRL 6</div>
+          <div class="kpi-lbl">Technology · Prototype validated</div>
+        </div>
+      </div>
+
+      <div class="platform-grid">
+
+        <!-- MODULE 01 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f8.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">📊</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 01</div>
+            <h3>Demand Forecasting Layer</h3>
+            <p>SKU, site, and daypart-level demand prediction integrating POS history, weather proxies, weekday patterns, and local event signals.</p>
+            <div class="more-text">Forecasts are generated per batch window, enabling prep quantity recommendations to be both demand-responsive and freshness-aware  preventing the over-production that leads to end-of-day write-offs.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+        <!-- MODULE 02 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f9.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">🧪</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 02</div>
+            <h3>Freshness-State Spoilage Engine</h3>
+            <p>Multi-age batch tracking model that scores each product unit by spoilage risk and remaining sell-through window.</p>
+            <div class="more-text">Unlike simple inventory systems that only know quantity on hand, the Freshness-State Engine knows the commercial age of every unit  enabling precise markdown trigger timing and improving food safety auditability for write-offs and pulls.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+        <!-- MODULE 03 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f10.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">⚙️</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 03</div>
+            <h3>Constraint-Aware Optimiser</h3>
+            <p>Margin-maximising action recommendations that honour batch minimums, prep windows, labour availability, and shelf capacity constraints.</p>
+            <div class="more-text">The optimisation layer treats prep planning and markdown timing as linked commercial decisions  if morning over-prep changes afternoon markdown strategy, the system instantly recalibrates all downstream recommendations to maximise margin recovery.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+        <!-- MODULE 04 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f11.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">📋</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 04</div>
+            <h3>Execution &amp; Compliance Tracker</h3>
+            <p>Real-time staff task delivery and compliance recording  capturing what was recommended, what was executed, and what margin outcome followed.</p>
+            <div class="more-text">The Execution Layer creates a feedback loop between recommendation and outcome. Compliance data is used to improve model accuracy over time and to give managers clear visibility into which decisions drove commercial performance and which missed margin.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+        <!-- MODULE 05 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f12.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">🔄</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 05</div>
+            <h3>Closed-Loop Learning System</h3>
+            <p>Continuous improvement engine that learns from every recommendation, execution record, and commercial outcome  getting smarter with every shift.</p>
+            <div class="more-text">Unlike platforms that give static advice, FusionMargin AWMO improves its own recommendations over time. The learning layer captures the relationship between decision compliance and profit outcome  building a proprietary operational dataset that becomes increasingly difficult for competitors to replicate.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+        <!-- MODULE 06 -->
+        <div class="platform-card">
+          <div class="platform-card-img">
+            <img src="f13.jpg" style="width:100%;height:100%;object-fit:cover;"
+              onerror="this.style.display='none';this.parentNode.querySelector('.platform-card-img-placeholder').style.display='flex'">
+            <div class="platform-card-img-placeholder" style="display:none;">📱</div>
+          </div>
+          <div class="inner">
+            <div class="element-badge">Module 06</div>
+            <h3>Manager &amp; Staff Interface</h3>
+            <p>Mobile-first store manager dashboard and staff task interface  delivering actionable decisions without requiring any data science expertise.</p>
+            <div class="more-text">Intuitive role-based views give store managers real-time margin alerts, markdown timing recommendations, and prep schedules. Staff see clear task lists. Area managers get multi-site performance analytics  all without needing to interpret complex data or build reports.</div>
+            <button class="expand-btn" onclick="toggleCard(this)">Expand ↓</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div><!-- end page platform -->
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: MARKET
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-market">
+  <section class="section-dark" style="padding-top:clamp(80px,12vw,120px);">
+    <div class="container">
+      <div class="label-tag">Market Analysis</div>
+      <h2 class="section-h2 white">A £3.2B UK Problem. 50,000+ Outlets. Zero Direct Competition.</h2>
+      <div class="section-divider divider-teal"></div>
+      <p class="para-dark" style="max-width:700px;margin-bottom:40px;">The UK food-to-go market presents a structurally urgent opportunity for FusionMargin AWMO. With 50,000+ cafés, convenience stores, and coffee chains each losing an estimated £10,000 per year to avoidable food waste, and structural cost pressures from rising food costs and NLW increases adding further margin compression, the demand for prescriptive food-to-go intelligence is both immediate and entirely unaddressed by any existing integrated platform.</p>
+
+      <div class="market-kpi">
+        <div class="mkt-card">
+          <div class="mkt-num">£3.2B</div>
+          <div class="mkt-lbl">Annual food waste cost in UK hospitality and food service  representing roughly £10,000 per outlet annually in avoidable operational loss</div>
+          <div class="mkt-source">WRAP · Hospitality &amp; Food Service Sector Analysis</div>
+        </div>
+        <div class="mkt-card">
+          <div class="mkt-num">50K+</div>
+          <div class="mkt-lbl">Viable UK food-to-go outlets currently losing margin to poor prep planning, markdown timing, and operational inconsistency</div>
+          <div class="mmt-source">FusionMargin AWMO Market Sizing 2025</div>
+        </div>
+        <div class="mkt-card">
+          <div class="mkt-num">168</div>
+          <div class="mkt-lbl">Customers needed to reach £1M ARR at target ARPC  representing less than 0.4% of the total addressable UK food-to-go market</div>
+          <div class="mkt-source">FusionMargin AWMO Revenue Model</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">UK Food-to-Go  Margin Loss by Cause</div>
+          <div class="chart-sub">Estimated annual margin leakage per category for a typical £500K turnover outlet</div>
+          <div class="chart-wrap"><canvas id="chartSector"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Root Causes of Food-to-Go Margin Erosion</div>
+          <div class="chart-sub">Primary sources of avoidable margin loss in UK perishable food-to-go operations</div>
+          <div class="chart-wrap"><canvas id="chartRootCause"></canvas></div>
+        </div>
+      </div>
+
+      <div class="chart-card-full">
+        <div class="chart-title">Competitive Positioning  UK Food-to-Go Decision Intelligence</div>
+        <div class="chart-sub">FusionMargin AWMO vs. existing platforms across key decision intelligence capability dimensions</div>
+        <div class="chart-wrap-lg"><canvas id="chartRadar"></canvas></div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">UK Food-to-Go AI Market Growth</div>
+          <div class="chart-sub">AI in food-to-go / hospitality tech market trajectory (£ Million) 2023–2030</div>
+          <div class="chart-wrap"><canvas id="chartGrowth"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">FusionMargin AWMO vs Competitors  Capability Score</div>
+          <div class="chart-sub">Feature coverage across food-to-go decision intelligence dimensions</div>
+          <div class="chart-wrap"><canvas id="chartPerf"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end page market -->
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: PRICING
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-pricing">
+  <section style="background:var(--bg-black);padding:clamp(80px,12vw,120px) 0 clamp(60px,8vw,100px);">
+    <div class="container">
+      <div class="label-tag">Pricing Plans</div>
+      <h2 class="section-h2 teal">Margin-Protecting Intelligence at Every Scale</h2>
+      <div class="section-divider divider-teal"></div>
+      <p class="para-dark" style="max-width:640px;margin-bottom:48px;">Three subscription tiers designed to serve every food-to-go operator  from independent cafés to multi-site chains. All plans include the core Demand Forecasting Engine, Freshness-State Spoilage Model, and Next-Best-Action delivery. No data science team required. No expensive consultants needed.</p>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Starter Tier</div>
+          <h3>Independent</h3>
+          <p class="desc">For independent cafés and single-site food-to-go operators seeking real-time spoilage alerts and prep optimisation.</p>
+          <span class="price-amount">£<span>149</span></span>
+          <div class="price-period">/ MONTH · BILLED MONTHLY</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="chk">✓</span> Core demand forecasting engine</li>
+            <li><span class="chk">✓</span> Freshness-state spoilage alerts</li>
+            <li><span class="chk">✓</span> POS &amp; waste data ingestion</li>
+            <li><span class="chk">✓</span> Prep quantity recommendations</li>
+            <li><span class="chk">✓</span> Basic markdown timing alerts</li>
+            <li><span class="chk">✓</span> 3 platform users</li>
+          </ul>
+          <button class="price-btn price-btn-outline" onclick="showPage('contact')">Get Started</button>
+        </div>
+
+        <div class="price-card featured">
+          <div class="price-tier">Growth Tier</div>
+          <h3>Multi-Site Chain</h3>
+          <p class="desc">For growing café chains and convenience groups requiring full optimisation, execution tracking, and multi-site analytics.</p>
+          <span class="price-amount">£<span>799</span></span>
+          <div class="price-period">/ MONTH · PER SITE · BILLED MONTHLY</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="chk">✓</span> Full constraint-aware optimisation</li>
+            <li><span class="chk">✓</span> Dynamic markdown depth &amp; timing</li>
+            <li><span class="chk">✓</span> Staff task execution tracking</li>
+            <li><span class="chk">✓</span> Closed-loop learning system</li>
+            <li><span class="chk">✓</span> Multi-site performance dashboard</li>
+            <li><span class="chk">✓</span> Priority POS integration support</li>
+            <li><span class="chk">✓</span> 15 platform users</li>
+          </ul>
+          <button class="price-btn price-btn-teal" onclick="showPage('contact')">Start Free Pilot</button>
+        </div>
+
+        <div class="price-card">
+          <div class="price-tier">Enterprise Tier</div>
+          <h3>Enterprise Group</h3>
+          <p class="desc">For large convenience networks and food-to-go groups managing group-wide margin optimisation and compliance.</p>
+          <span class="price-amount">£<span>Custom</span></span>
+          <div class="price-period">/ MONTH · CUSTOM PRICING</div>
+          <div class="price-divider"></div>
+          <ul class="price-features">
+            <li><span class="chk">✓</span> Full API integration (POS, ERP, WMS)</li>
+            <li><span class="chk">✓</span> White-label store manager interface</li>
+            <li><span class="chk">✓</span> Central control tower analytics</li>
+            <li><span class="chk">✓</span> Food safety &amp; allergen compliance module</li>
+            <li><span class="chk">✓</span> ISO 27001 &amp; GDPR compliance pack</li>
+            <li><span class="chk">✓</span> 24/7 strategic support &amp; SLA</li>
+            <li><span class="chk">✓</span> Unlimited users + SSO</li>
+          </ul>
+          <button class="price-btn price-btn-outline" onclick="showPage('contact')">Contact Sales</button>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="label-tag">Common Questions</div>
+      <h2 class="section-h2 white" style="margin-bottom:10px;">Everything You Need to Know</h2>
+      <div class="section-divider divider-teal"></div>
+
+      <div class="faq-wrap">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFAQ(this)">
+            <h4>How quickly can FusionMargin AWMO be deployed in my store?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-body">Most sites are operational within 2–4 weeks. The onboarding process involves connecting your POS data, configuring your product catalogue and shelf-life rules, and completing a brief operational calibration session with your team. No technical expertise is required.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFAQ(this)">
+            <h4>Does the platform work without a full POS integration?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-body">Yes. FusionMargin AWMO can operate using manual sales exports from most common POS systems including Square, Lightspeed, and EPOS Now. Full API integrations are available for enterprise clients requiring real-time data flows.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFAQ(this)">
+            <h4>How does the free pilot work?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-body">Pilot programmes run for 4–8 weeks at no cost. We configure the platform for your site, run the decision engine alongside your existing operations, and provide a margin impact report at the end showing documented waste reduction, markdown improvement, and sell-through uplift. Pilots convert to subscriptions only when you're satisfied with the results.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFAQ(this)">
+            <h4>What food-to-go categories does FusionMargin AWMO support?</h4>
+            <div class="faq-icon">+</div>
+          </div>
+          <div class="faq-body">The platform is designed for all prepared perishable categories  sandwiches, wraps, pastries, bakery, salads, hot snacks, and ready-to-eat meals. It supports both chilled and ambient shelf-life categories with configurable pull times, batch rules, and freshness-state definitions per product group.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end page pricing -->
+
+
+<!-- ═══════════════════════════════════════════
+     PAGE: CONTACT
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <section style="background:var(--bg-black);padding:clamp(80px,12vw,120px) 0 clamp(60px,8vw,100px);">
+    <div class="container">
+      <div class="label-tag">Get in Touch</div>
+      <h2 class="section-h2 teal">Start Your Free Pilot Today</h2>
+      <div class="section-divider divider-teal"></div>
+      <p class="para-dark" style="max-width:620px;margin-bottom:52px;">Whether you're an independent café owner, a multi-site convenience operator, or a coffee chain director  FusionMargin AWMO can demonstrate measurable margin improvement within your first 4 weeks. No commitment required.</p>
+
+      <div class="contact-grid">
+        <div>
+          <p class="contact-left-para">Our team will configure the platform for your site, connect your data, and run a live pilot showing exactly how much margin you're currently losing  and how much we can recover.</p>
+          <p class="contact-left-para">Every pilot concludes with a documented Margin Impact Report including waste reduction, sell-through improvement, and markdown timing accuracy.</p>
+
+          <div class="contact-item">
+            <div class="contact-icon">1</div>
+            <div class="contact-item-text">
+              <strong>Email</strong>
+              <span>fusionmarginuk@outlook.com</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">2</div>
+            <div class="contact-item-text">
+              <strong>Phone</strong>
+              <span>+44 7442 278 623</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">3</div>
+            <div class="contact-item-text">
+              <strong>Location</strong>
+              <span>London, United Kingdom</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">4</div>
+            <div class="contact-item-text">
+              <strong>Response Time</strong>
+              <span>Within 24 hours · Mon–Fri</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="contact-form-card">
+            <h3>Book a Free Demo</h3>
+            <form onsubmit="handleSubmit(event)">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-ctrl" placeholder="Your full name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Business Name</label>
+                <input type="text" class="form-ctrl" placeholder="Your café or chain name" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-ctrl" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Number of Sites</label>
+                <select class="form-ctrl">
+                  <option>1 site (independent)</option>
+                  <option>2–5 sites</option>
+                  <option>6–20 sites</option>
+                  <option>20+ sites (enterprise)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea class="form-ctrl ta" placeholder="Tell us about your current food waste challenges..."></textarea>
+              </div>
+              <button type="submit" class="form-submit">Request Free Demo →</button>
+            </form>
+            <div id="formSuccess" style="display:none;margin-top:16px;background:rgba(30,126,228,0.1);border:1px solid rgba(30,126,228,0.3);border-radius:8px;padding:14px;color:var(--teal);font-size:13px;text-align:center;font-family:var(--mono);">
+              ✓ Thank you! Our team will contact you within 24 hours.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end page contact -->
+
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+
+              <span class="footer-logo">Fusion<span>Margin</span></span>
+        <p>The UK's first AI-native Margin Operating System for perishable food-to-go retail  transforming fragmented prep, waste, and sales data into real-time prescriptive margin decisions using a proprietary Freshness-State Decision Model, Constraint-Aware Optimisation Engine, and Closed-Loop Learning System to help UK cafés, convenience stores, and coffee chains stop losing money to spoilage, stockouts, and poor markdown timing.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <a onclick="showPage('platform')">Demand Forecasting Engine</a>
+        <a onclick="showPage('platform')">Freshness-State Spoilage Model</a>
+        <a onclick="showPage('platform')">Constraint-Aware Optimisation</a>
+        <a onclick="showPage('platform')">Closed-Loop Learning System</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a onclick="showPage('about')">About FusionMargin</a>
+        <a onclick="showPage('market')">Market Analysis</a>
+        <a onclick="showPage('pricing')">Pricing &amp; Plans</a>
+        <a onclick="showPage('contact')">Book a Demo</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <span>FusionMargin AWMO</span> · London, UK · GDPR Compliant · Food Safety Aligned · WRAP Partnership Ready</p>
+      <p><span>fusionmargin.ai</span> · AI-Native Food-to-Go Margin Operating System · Strictly Confidential</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════ JAVASCRIPT ═══════════ -->
+<script>
+/* ─── PAGE NAV ───────────────────────────────── */
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links button').forEach(b=>b.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(pg){pg.classList.add('active');}
+  const btn=document.getElementById('nav-'+name);
+  if(btn){btn.classList.add('active');}
+  window.scrollTo({top:0,behavior:'instant'});
+  if(name==='market'&&!window.marketChartsLoaded){initMarketCharts();window.marketChartsLoaded=true;}
+}
+
+function toggleCard(btn){
+  const card=btn.closest('.platform-card');
+  const isOpen=card.classList.contains('open');
+  document.querySelectorAll('.platform-card').forEach(c=>{
+    c.classList.remove('open');
+    const eb=c.querySelector('.expand-btn');
+    if(eb){eb.textContent=eb.textContent.includes('Expand')?'Expand ↓':'Learn More ↓';}
+  });
+  if(!isOpen){
+    card.classList.add('open');
+    btn.textContent=btn.textContent.includes('Expand')?'Collapse ↑':'Show Less ↑';
+  }
+}
+
+function toggleFAQ(el){
+  el.parentElement.classList.toggle('open');
+}
+
+function closeMobile(){
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+document.getElementById('hamburger').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+
+function handleSubmit(e){
+  e.preventDefault();
+  document.getElementById('formSuccess').style.display='block';
+}
+
+/* ─── CHART THEME ────────────────────────────── */
+const BLUE='rgba(30,126,228,1)';
+const BLUE2='rgba(30,126,228,0.75)';
+const BLUE3='rgba(30,126,228,0.4)';
+const NAVY='rgba(26,82,168,0.9)';
+const NAVY2='rgba(91,163,232,0.7)';
+const GRID='rgba(255,255,255,0.05)';
+const MUTED='rgba(122,172,216,0.8)';
+
+Chart.defaults.font.family="'IBM Plex Mono', monospace";
+Chart.defaults.font.size=11;
+Chart.defaults.color=MUTED;
+
+/* ─── MARKET CHARTS ──────────────────────────── */
+function initMarketCharts(){
+  // Sector Margin Loss
+  new Chart(document.getElementById('chartSector').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['Over-production Waste','Poor Markdown Timing','Stockout Lost Sales','Labour Inefficiency','Inconsistent Execution','Data Fragmentation'],
+      datasets:[{
+        label:'Estimated Annual Margin Loss (£K/outlet)',
+        data:[3.8,2.4,1.8,1.2,0.8,0.4],
+        backgroundColor:[BLUE,BLUE2,BLUE3,'rgba(30,126,228,0.25)',NAVY2,NAVY],
+        borderRadius:5,barPercentage:0.6
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:GRID},ticks:{color:MUTED,callback:v=>'£'+v+'K'}},y:{grid:{display:false},ticks:{color:MUTED,font:{size:10}}}}}
+  });
+
+  // Root Cause Erosion
+  new Chart(document.getElementById('chartRootCause').getContext('2d'),{
+    type:'doughnut',
+    data:{
+      labels:['Over-production (38%)','Markdown Timing (27%)','Stockouts (18%)','Labour Inconsistency (12%)','Data Gaps (5%)'],
+      datasets:[{
+        data:[38,27,18,12,5],
+        backgroundColor:[BLUE,'rgba(30,126,228,0.7)',BLUE3,'rgba(26,82,168,0.65)','rgba(91,163,232,0.5)'],
+        borderColor:['rgba(30,126,228,0.9)','rgba(30,126,228,0.7)','rgba(30,126,228,0.45)','rgba(26,82,168,0.7)','rgba(91,163,232,0.55)'],
+        borderWidth:1.5
+      }]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:MUTED,boxWidth:10,padding:10,font:{size:10}}}}}
+  });
+
+  // Radar Competitive
+  new Chart(document.getElementById('chartRadar').getContext('2d'),{
+    type:'radar',
+    data:{
+      labels:['Freshness-State Model','Joint Prep+Markdown Opt.','Constraint-Aware AI','Closed-Loop Learning','Execution Tracking','Real-Time Decisions'],
+      datasets:[
+        {label:'FusionMargin AWMO',data:[5,5,5,5,5,5],backgroundColor:'rgba(30,126,228,0.12)',borderColor:BLUE,borderWidth:2,pointBackgroundColor:BLUE},
+        {label:'POS Platforms (Square)',data:[1,1,1,1,2,1],backgroundColor:'rgba(26,82,168,0.07)',borderColor:NAVY2,borderWidth:1.5,pointBackgroundColor:NAVY2},
+        {label:'Inventory Systems (MarketMan)',data:[2,1,2,1,2,1],backgroundColor:'rgba(100,180,255,0.06)',borderColor:'rgba(100,180,255,0.5)',borderWidth:1.5,pointBackgroundColor:'rgba(100,180,255,0.5)'},
+        {label:'Markdown Only (Wasteless)',data:[2,2,1,1,1,2],backgroundColor:'rgba(200,180,100,0.06)',borderColor:'rgba(200,180,100,0.5)',borderWidth:1.5,pointBackgroundColor:'rgba(200,180,100,0.5)'},
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:MUTED,boxWidth:10,padding:14,font:{size:10}}}},scales:{r:{backgroundColor:'rgba(30,126,228,0.01)',grid:{color:GRID},pointLabels:{color:MUTED,font:{size:10}},ticks:{display:false},min:0,max:5}}}
+  });
+
+  // Market Growth
+  new Chart(document.getElementById('chartGrowth').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['2022','2023','2024','2025','2026','2027','2028','2030'],
+      datasets:[
+        {label:'UK Food-to-Go AI Market (£M)',data:[18,22,28,36,46,58,72,100],backgroundColor:NAVY,borderRadius:5,barPercentage:0.55},
+        {type:'line',label:'AI Adoption Rate %',data:[null,4,8,14,22,30,40,55],borderColor:BLUE,borderWidth:2,yAxisID:'y2',tension:0.4,pointBackgroundColor:BLUE,fill:false}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:MUTED,boxWidth:10,padding:12,font:{size:10}}}},scales:{x:{grid:{color:GRID},ticks:{color:MUTED}},y:{grid:{color:GRID},ticks:{color:MUTED,callback:v=>'£'+v+'M'}},y2:{position:'right',grid:{display:false},ticks:{color:MUTED,callback:v=>v+'%'}}}}
+  });
+
+  // Performance Comparison
+  new Chart(document.getElementById('chartPerf').getContext('2d'),{
+    type:'bar',
+    data:{
+      labels:['Freshness-State Model','Joint Prep+Markdown','Constraint-Aware AI','Closed-Loop Learning','Execution Tracking','Real-Time Decisions'],
+      datasets:[
+        {label:'FusionMargin AWMO',data:[98,95,95,90,98,95],backgroundColor:BLUE2,borderRadius:5,barPercentage:0.35},
+        {label:'Existing Food-to-Go Software Avg',data:[10,5,8,5,15,10],backgroundColor:NAVY2,borderRadius:5,barPercentage:0.35}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:MUTED,boxWidth:10,padding:14,font:{size:10}}}},scales:{x:{grid:{color:GRID},ticks:{color:MUTED,font:{size:9}}},y:{grid:{color:GRID},ticks:{color:MUTED,callback:v=>v+' pts'}}}}
+  });
+}
+</script>
+</body>
+</html>
